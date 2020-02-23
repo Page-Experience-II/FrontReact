@@ -54,6 +54,11 @@ Get the source:
 git clone https://github.com/PageExperience/FrontReact.git
 ```
 
+Copy the environement variables
+```
+cp .env-tempale .env
+```
+
 Install dependencies
 ```
 npm i
