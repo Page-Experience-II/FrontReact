@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./styles.css";
+import 'antd/dist/antd.css';
 
 import Login from "./page/Login";
 import Home from "./page/Home";
@@ -11,6 +12,7 @@ import Journals from "./page/Journals";
 import Notifications from "./page/Notifications";
 import Search from "./page/Search";
 import SignUp from "./page/SignUp";
+import SandBox from './page/SandBox';
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
           <Route push exact path="/notifications/" component={Notifications} />
           <Route push exact path="/search/:data" component={Search} />
           <Route push exact path="/search/" component={Search} />
+          <Route push exact path="/sandbox/" component={SandBox} />
         </Switch>
       </Router>
     </div>
