@@ -1,4 +1,4 @@
-## PAGEX FRONT/CLIENT PROJECT
+## PAGEX FRONT/CLIENT PROJECT 
 
 ## Description of the project :
 
