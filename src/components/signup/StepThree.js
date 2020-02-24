@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
+import { Link } from "react-router-dom";
+import { userRegisterInfoAction } from '../../store/actions/SignupAction/StoreUserInfoAction';
+const customNotification = require('../../Utils/notification');
+
 
 const Wrapper = styled.div`
   form {
@@ -13,7 +19,10 @@ const Wrapper = styled.div`
     margin: 15px 0;
     font-weight: bold;
   }
-  input[type="text"] {
+  .hidenField {
+    display: none;
+  }
+  input[type="password"] {
     border: none;
     background: #f1f1f1;
     height: 30px;
@@ -29,17 +38,67 @@ const Wrapper = styled.div`
 `;
 
 class StepThree extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      password: "",
+      confPassword: ""
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleValidatePwd = this.handleValidatePwd.bind(this);
+  }
+
+  handleValidatePwd() {
+    const { password, confPassword } = this.state;
+
+    if (password === "" || confPassword === "") {
+      customNotification.fireNotification("warning", "All fields are required")
+    } else if (password.length < 8) {
+      customNotification.fireNotification("warning", "Password length must be more than 08 characters")
+    } else if (password === confPassword ) {
+      customNotification.fireNotification("warning", "Passwords does not match")
+    } else {
+      // Store password and continu
+      let data = {
+        password: password
+      }
+      this.props.onUserRegisterInfoAction(data);
+      setTimeout(() => {
+        document.getElementById('next').click();
+      }, 200)
+    }
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  }
+
+
+
   render() {
     return (
       <Wrapper>
         <form>
           <label>Please set a password</label>
-          <input type="text" />
+          <input type="password" name="password" onChange={this.handleChange} required />
           <label>Confirm your password</label>
-          <input type="text" />
+          <input type="password" name="confPassword" onChange={this.handleChange} required />
           <input
             className="btn-next"
             type="button"
+            onClick={this.handleValidatePwd}
+            value="Next"
+          />
+          <input
+            className="btn-next"
+            type="button"
+            id="next"
+            className="hidenField"
             value="Next"
             onClick={this.props.next}
           />
@@ -55,4 +114,22 @@ class StepThree extends Component {
   }
 }
 
-export default StepThree;
+const state = (state, ownProps = {}) => {
+  return {
+    userRegisterInfo: state.userRegisterInfo,
+    codeIsValid: state.codeIsValid.data,
+    accountVerifData: state.accountVerifData.data,
+    location: state.location,
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    navigateTo: (location) => {
+      dispatch(push(location));
+    },
+    onUserRegisterInfoAction: (data) => dispatch(userRegisterInfoAction(data))
+  }
+};
+
+export default connect(state, mapDispatchToProps)(StepThree);
