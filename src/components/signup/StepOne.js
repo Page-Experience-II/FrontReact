@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { emailVerifficationAction } from '../../store/actions/SignupAction/ValidationCodeAction';
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
 
 const customNotification = require('../../Utils/notification');
 
@@ -41,25 +44,16 @@ class StepOne extends Component {
       fullname: "",
       email: ""
     }
-
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.value;
     const name = target.name;
-
-    if (target.type === "file") {
-      this.setState({
-        photo: target.files[0]
-      });
-
-    } else {
-      this.setState({
-        [name]: value
-      });
-    }
+    this.setState({
+      [name]: value
+    });
   }
 
   valdateFormData() {
@@ -75,12 +69,31 @@ class StepOne extends Component {
     return true;
   }
 
-  handleNext(e) {
+  async handleNext(e) {
     e.preventDefault();
     if (this.valdateFormData()) {
-      document.getElementById('next').click();
+      //Send an email with validation code
+      let data = {
+        data: {
+          email: this.state.email,
+          fullname: this.state.fullname
+        }
+      }
+
+      await this.props.onEmailVerifficationAction(data);
+    } else
+      return false;
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    if (nextProps.accountVerifData && nextProps.accountVerifData.data.code === 200) {
+      setTimeout(() => {
+        document.getElementById('next').click();
+      }, 200)
+    } else {
+      customNotification.fireNotification("warning", nextProps.accountVerifData.data.msg)
     }
-    return false;
   }
 
   render() {
@@ -108,4 +121,22 @@ class StepOne extends Component {
   }
 }
 
-export default StepOne;
+
+
+const state = (state, ownProps = {}) => {
+  return {
+    location: state.location,
+    accountVerifData: state.accountVerifData.data
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    navigateTo: (location) => {
+      dispatch(push(location));
+    },
+    onEmailVerifficationAction: (data) => dispatch(emailVerifficationAction(data)),
+  }
+};
+
+export default connect(state, mapDispatchToProps)(StepOne);
