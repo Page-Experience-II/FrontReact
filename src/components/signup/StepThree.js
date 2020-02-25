@@ -55,7 +55,7 @@ class StepThree extends Component {
       customNotification.fireNotification("warning", "All fields are required")
     } else if (password.length < 8) {
       customNotification.fireNotification("warning", "Password length must be more than 08 characters")
-    } else if (password === confPassword ) {
+    } else if (password !== confPassword ) {
       customNotification.fireNotification("warning", "Passwords does not match")
     } else {
       // Store password and continu

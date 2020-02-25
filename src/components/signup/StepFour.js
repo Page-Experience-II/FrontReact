@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Masque from "../../image/icone/masques1.svg";
+import { userRegisterInfoAction } from '../../store/actions/SignupAction/StoreUserInfoAction';
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
 
 const Wrapper = styled.div`
   form {
@@ -13,6 +16,9 @@ const Wrapper = styled.div`
     width: 60%;
     margin: 15px 0;
     font-weight: bold;
+  }
+  .hidenField {
+    display: none;
   }
   input[type="text"] {
     border: none;
@@ -45,6 +51,46 @@ const Wrapper = styled.div`
 `;
 
 class StepFour extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: ""
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleValidatePhoto = this.handleValidatePhoto.bind(this)
+  }
+
+  handleValidatePhoto() {
+    console.log("data : ", this.props.userRegisterInfo);
+    let data = {
+      password : this.props.userRegisterInfo.data.password,
+      photo: this.state.file
+    }
+    this.props.onUserRegisterInfoAction(data);
+    setTimeout(() => {
+      document.getElementById('next').click();
+    }, 200)
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    if (target.type === "file") {
+      this.setState({
+        photo: target.files[0]
+      });
+
+    } else {
+      this.setState({
+        [name]: value
+      });
+    }
+  }
+
+
+
   render() {
     return (
       <Wrapper>
@@ -52,13 +98,20 @@ class StepFour extends Component {
           <div className="masque">
             <img src={Masque} alt="masque" />
           </div>
-          <input type="file" />
+          <input type="file" name="file" onChange={this.handleChange} />
           <h5>Please upload a profile picture</h5>
           <p>
             This step is mandatory in order to complete creating your profile.
           </p>
           <input
             className="btn-next"
+            type="button"
+            value="Next"
+            onClick={this.handleValidatePhoto}
+          />
+          <input
+            className="hidenField"
+            id="next"
             type="button"
             value="Next"
             onClick={this.props.next}
@@ -75,4 +128,22 @@ class StepFour extends Component {
   }
 }
 
-export default StepFour;
+
+const state = (state, ownProps = {}) => {
+  return {
+    userRegisterInfo: state.userRegisterInfo,
+    location: state.location,
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    navigateTo: (location) => {
+      dispatch(push(location));
+    },
+    onUserRegisterInfoAction: (data) => dispatch(userRegisterInfoAction(data))
+  }
+};
+
+
+export default connect(state, mapDispatchToProps)(StepFour);

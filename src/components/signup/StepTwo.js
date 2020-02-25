@@ -78,7 +78,7 @@ class StepTwo extends Component {
           document.getElementById('next').click();
         }, 200)
       } else {
-        customNotification.fireNotification("warning", nextProps.accountVerifData.data.msg)
+        customNotification.fireNotification("warning", nextProps.codeIsValid.data.msg)
       }
     }
   }
