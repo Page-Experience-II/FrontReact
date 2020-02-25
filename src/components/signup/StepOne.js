@@ -71,6 +71,7 @@ class StepOne extends Component {
 
   async handleNext(e) {
     e.preventDefault();
+
     if (this.valdateFormData()) {
       //Send an email with validation code
       let data = {
@@ -89,6 +90,9 @@ class StepOne extends Component {
 
     if (nextProps.accountVerifData && nextProps.accountVerifData.data.code === 200) {
       setTimeout(() => {
+
+        this.props.userInfo.fullname = this.state.fullname;
+        this.props.userInfo.email = this.state.email;
         document.getElementById('next').click();
       }, 200)
     } else {

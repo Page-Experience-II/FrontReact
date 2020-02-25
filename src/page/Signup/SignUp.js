@@ -11,7 +11,16 @@ import Wrapper from './Signup.styledComponent';
 
 class SignUp extends Component {
   state = {
-    step: "ONE"
+    step: "ONE",
+    userInfo: {
+      password : "",
+      photo: "",
+      id: "",
+      validationCode: "",
+      fullname : "",
+      email: "",
+      passion: "",
+    }
   };
 
   handleOne = () => {
@@ -38,22 +47,22 @@ class SignUp extends Component {
 
     switch (this.state.step) {
       case "ONE":
-        step = <StepOne next={this.handleTwo} />;
+        step = <StepOne userInfo={this.state.userInfo} next={this.handleTwo} />;
         break;
       case "TWO":
-        step = <StepTwo next={this.handleThree} back={this.handleOne} />;
+        step = <StepTwo userInfo={this.state.userInfo} next={this.handleThree} back={this.handleOne} />;
         break;
       case "THREE":
-        step = <StepThree next={this.handleFour} back={this.handleTwo} />;
+        step = <StepThree userInfo={this.state.userInfo}  next={this.handleFour} back={this.handleTwo} />;
         break;
       case "FOUR":
-        step = <StepFour next={this.handleFive} back={this.handleThree} />;
+        step = <StepFour userInfo={this.state.userInfo} next={this.handleFive} back={this.handleThree} />;
         break;
       case "FIVE":
-        step = <StepFive back={this.handleFour} />;
+        step = <StepFive userInfo={this.state.userInfo} back={this.handleFour} />;
         break;
       default:
-        step = <StepOne />;
+        step = <StepOne userInfo={this.state.userInfo} />;
     }
 
     return (

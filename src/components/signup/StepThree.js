@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import { Link } from "react-router-dom";
-import { userRegisterInfoAction } from '../../store/actions/SignupAction/StoreUserInfoAction';
 const customNotification = require('../../Utils/notification');
 
 
@@ -59,11 +57,8 @@ class StepThree extends Component {
       customNotification.fireNotification("warning", "Passwords does not match")
     } else {
       // Store password and continu
-      let data = {
-        password: password
-      }
-      this.props.onUserRegisterInfoAction(data);
       setTimeout(() => {
+        this.props.userInfo.password = password;
         document.getElementById('next').click();
       }, 200)
     }
@@ -116,7 +111,6 @@ class StepThree extends Component {
 
 const state = (state, ownProps = {}) => {
   return {
-    userRegisterInfo: state.userRegisterInfo,
     codeIsValid: state.codeIsValid.data,
     accountVerifData: state.accountVerifData.data,
     location: state.location,
@@ -128,7 +122,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     navigateTo: (location) => {
       dispatch(push(location));
     },
-    onUserRegisterInfoAction: (data) => dispatch(userRegisterInfoAction(data))
   }
 };
 

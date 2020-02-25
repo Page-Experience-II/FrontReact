@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { Link } from "react-router-dom";
 import { codeValidateAction } from '../../store/actions/SignupAction/CodeValidationAction';
+
 const customNotification = require('../../Utils/notification');
 
 const Wrapper = styled.div`
@@ -65,8 +66,6 @@ class StepTwo extends Component {
           validationCode: this.state.codeValidation
         }
       }
-
-      console.log("ddd => :", data, this.props.accountVerifData.data.data.id);
       this.props.onCodeValidateAction(data)
     }
   }
@@ -75,6 +74,9 @@ class StepTwo extends Component {
     if (nextProps.codeIsValid != undefined) {
       if (nextProps.codeIsValid && nextProps.codeIsValid.data && nextProps.codeIsValid.code === 200) {
         setTimeout(() => {
+          
+          this.props.userInfo.id = this.props.accountVerifData.data.data.id;
+          this.props.userInfo.validationCode = this.state.codeValidation;
           document.getElementById('next').click();
         }, 200)
       } else {
@@ -129,7 +131,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     navigateTo: (location) => {
       dispatch(push(location));
     },
-    onCodeValidateAction: (data) => dispatch(codeValidateAction(data))
+    onCodeValidateAction: (data) => dispatch(codeValidateAction(data)),
   }
 };
 

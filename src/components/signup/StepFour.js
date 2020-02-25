@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Masque from "../../image/icone/masques1.svg";
-import { userRegisterInfoAction } from '../../store/actions/SignupAction/StoreUserInfoAction';
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 
@@ -54,20 +53,17 @@ class StepFour extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: ""
+      photo: ""
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleValidatePhoto = this.handleValidatePhoto.bind(this)
   }
 
   handleValidatePhoto() {
-    console.log("data : ", this.props.userRegisterInfo);
-    let data = {
-      password : this.props.userRegisterInfo.data.password,
-      photo: this.state.file
-    }
-    this.props.onUserRegisterInfoAction(data);
+    
     setTimeout(() => {
+      this.props.userInfo.photo = this.state.photo;
+    
       document.getElementById('next').click();
     }, 200)
   }
@@ -131,7 +127,6 @@ class StepFour extends Component {
 
 const state = (state, ownProps = {}) => {
   return {
-    userRegisterInfo: state.userRegisterInfo,
     location: state.location,
   }
 }
@@ -141,7 +136,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     navigateTo: (location) => {
       dispatch(push(location));
     },
-    onUserRegisterInfoAction: (data) => dispatch(userRegisterInfoAction(data))
   }
 };
 

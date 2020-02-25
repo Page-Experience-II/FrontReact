@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
+import { getAllPassionsAction } from '../../store/actions/PassionActions/getAllPassionsAction';
+import { signupNewUserAction } from '../../store/actions/SignupAction/SignupNewUserAction';
+
+const customNotification = require('../../Utils/notification');
 
 const Wrapper = styled.div`
   form {
@@ -26,21 +32,75 @@ const Wrapper = styled.div`
 `;
 
 class StepFive extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      passions: [],
+      passion: "",
+    }
+
+    this.handleFinish = this.handleFinish.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  async handleFinish(e) {
+    e.preventDefault();
+
+    if (this.state.passion === "") {
+      customNotification.fireNotification("warning", "You should choose a passion")
+    } else {
+      this.props.userInfo.passion = this.state.passion;
+      await this.props.onSignupNewUserAction(this.props.userInfo);
+    }
+  }
+
+  componentWillMount() {
+    this.props.onGetAllPassionsAction(0, 10);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.passionsList)
+      if (nextProps.passionsList.data.data) {
+        this.setState({ passions: nextProps.passionsList.data.data.data })
+      }
+
+    if (nextProps.signedUpUser !== undefined)
+      if (nextProps.signedUpUser && nextProps.signedUpUser.data.code === 200) {
+        customNotification.fireNotification("success", nextProps.signedUpUser.data.data.msg)
+      } else {
+        customNotification.fireNotification("warning", nextProps.signedUpUser.data.data.msg)
+      }
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  }
+
   render() {
+    const { passions } = this.state;
+
     return (
       <Wrapper>
         <form>
           <h3>What form of expression you're interested in?</h3>.
-          <select>
-            <option value="Photography">Writing</option>
-            <option value="Painting">Painting</option>
-            <option value="Writing">Writing</option>
+          <select name="passion" value={this.state.passion} onChange={this.handleChange}>
+            <option>Select your pasison</option>
+            {passions.length > 0 ?
+              passions.map((passion, index) => {
+                return <option key={index} value={passion._id}>{passion.passionTitle}</option>
+              })
+              : ""}
           </select>
           <input
             className="btn-next"
             type="button"
             value="Finish"
-            onClick={this.props.next}
+            onClick={this.handleFinish}
           />
           <input
             className="btn-back"
@@ -54,4 +114,23 @@ class StepFive extends Component {
   }
 }
 
-export default StepFive;
+const state = (state, ownProps = {}) => {
+  return {
+    signedUpUser: state.signedUpUser.data,
+    accountVerifData: state.accountVerifData.data,
+    passionsList: state.passionsList,
+    location: state.location,
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    navigateTo: (location) => {
+      dispatch(push(location));
+    },
+    onGetAllPassionsAction: (page, limit) => dispatch(getAllPassionsAction(page, limit)),
+    onSignupNewUserAction: (data) => dispatch(signupNewUserAction(data))
+  }
+};
+
+export default connect(state, mapDispatchToProps)(StepFive);
