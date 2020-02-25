@@ -1,8 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
 import "./styles.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 import Login from "./page/Login";
 import Home from "./page/Home";
@@ -10,12 +12,13 @@ import Content from "./page/Content";
 import Journals from "./page/Journals";
 import Notifications from "./page/Notifications";
 import Search from "./page/Search";
-import SignUp from "./page/SignUp";
+import SignUp from "./page/Signup/SignUp";
 import TestRedux from './Test/Test.redux';
 
 export default function App() {
   return (
     <div className="App">
+      <ToastContainer/>
       <Router forceRefresh={false}>
         <Switch>
           <Route push exact path="/" component={Login} />
