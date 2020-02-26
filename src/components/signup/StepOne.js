@@ -87,17 +87,18 @@ class StepOne extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    
+    if (nextProps.accountVerifData !== undefined)
+      if (nextProps.accountVerifData && nextProps.accountVerifData.data.code === 200) {
+        setTimeout(() => {
 
-    if (nextProps.accountVerifData && nextProps.accountVerifData.data.code === 200) {
-      setTimeout(() => {
-
-        this.props.userInfo.fullname = this.state.fullname;
-        this.props.userInfo.email = this.state.email;
-        document.getElementById('next').click();
-      }, 200)
-    } else {
-      customNotification.fireNotification("warning", nextProps.accountVerifData.data.msg)
-    }
+          this.props.userInfo.fullname = this.state.fullname;
+          this.props.userInfo.email = this.state.email;
+          document.getElementById('next').click();
+        }, 200)
+      } else {
+        customNotification.fireNotification("warning", nextProps.accountVerifData.data.msg)
+      }
   }
 
   render() {
