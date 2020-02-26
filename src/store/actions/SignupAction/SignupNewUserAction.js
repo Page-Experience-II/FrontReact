@@ -24,11 +24,12 @@ export function signupNewUserAction(data) {
     return async function (dispatch) {
         const dataHttp = new FormData()
        
-        dataHttp.append('password', data.title);
+        dataHttp.append('password', data.password);
         dataHttp.append('id', data.id);
         dataHttp.append('validationCode', data.validationCode);
         dataHttp.append('fullname', data.fullname);
         dataHttp.append('email', data.email);
+        dataHttp.append('passion', data.passion);
 
         if (data.photo !== "")
             await dataHttp.append('file', data.photo, data.photo.name)

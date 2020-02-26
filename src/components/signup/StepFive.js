@@ -50,6 +50,7 @@ class StepFive extends Component {
       customNotification.fireNotification("warning", "You should choose a passion")
     } else {
       this.props.userInfo.passion = this.state.passion;
+      console.log("this.props.userInfo :", this.props.userInfo);
       await this.props.onSignupNewUserAction(this.props.userInfo);
     }
   }
