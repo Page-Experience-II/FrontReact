@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import { loginUserAction } from '../store/actions/LoginAction/LoginUserAction';
 
 const customNotification = require('../Utils/notification');
 
@@ -71,11 +72,29 @@ class Login extends Component {
     } else if (!validateEmail.test(this.state.email)) {
       customNotification.fireNotification("warning", "Email not valid")
     } else {
-      
-    }
+      // Login user
+      let data = {
+        data: {
+          email: this.state.email,
+          password: this.state.password
+        }
+      }
 
+      this.props.onloginUserAction(data);
+    }
   }
 
+  componentWillReceiveProps(nextProps) {
+console.log("nextProps.loginUser :", nextProps, nextProps.loginUser.code)
+
+    if (nextProps.loginUser != undefined) {
+      if (nextProps.loginUser && nextProps.loginUser.data && nextProps.loginUser.code === 200) {
+        customNotification.fireNotification("success", "LogedIn")
+      } else {
+        customNotification.fireNotification("error", "Password and/or email not correct")
+      }
+    }
+  }
 
   handleChange(event) {
     const target = event.target;
@@ -110,11 +129,27 @@ class Login extends Component {
             />
           </label>
           <Link to="/signup/"> Sign up here </Link>
-          <button onClick={this.handleSubmit}  className="btn-token">Valider</button>
+          <button onClick={this.handleSubmit} className="btn-token">Valider</button>
         </form>
       </Wrapper>
     );
   }
 }
 
-export default Login;
+const state = (state, ownProps = {}) => {
+  return {
+    loginUser: state.loginUser.data,
+    location: state.location,
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    navigateTo: (location) => {
+      dispatch(push(location));
+    },
+    onloginUserAction: (data) => dispatch(loginUserAction(data))
+  }
+};
+
+export default connect(state, mapDispatchToProps)(Login);

@@ -6,8 +6,10 @@ import codeIsValid from './reducers/SignupReducer/CodeValidationreducer';
 import userRegisterInfo from './reducers/SignupReducer/StoreUserInfoReducer';
 import passionsList from './reducers/PassionReducers/getAllPassionsReducer';
 import signedUpUser from './reducers/SignupReducer/signupNewUserReducer';
+import loginUser from './reducers/LoginReducer/LoginUserReducer';
 
 const reducers = combineReducers({
+  loginUser: loginUser,
   signedUpUser: signedUpUser,
   passionsList: passionsList,
   userRegisterInfo: userRegisterInfo,
