@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-
+import PrivateRoute from './middleWare/PrivateRoute';
 
 import Login from "./page/Login";
 import Home from "./page/Home";
@@ -24,12 +24,12 @@ export default function App() {
           <Route push exact path="/" component={Login} />
           <Route push exact path="/test" component={TestRedux} />
           <Route push exact path="/signup/" component={SignUp} />
-          <Route push exact path="/home/" component={Home} />
-          <Route push exact path="/content/:article" component={Content} />
-          <Route push exact path="/journals/" component={Journals} />
-          <Route push exact path="/notifications/" component={Notifications} />
-          <Route push exact path="/search/:data" component={Search} />
-          <Route push exact path="/search/" component={Search} />
+          <PrivateRoute push exact path="/home" component={Home} />
+          <PrivateRoute push exact path="/content/:article" component={Content} />
+          <PrivateRoute push exact path="/journals/" component={Journals} />
+          <PrivateRoute push exact path="/notifications/" component={Notifications} />
+          <PrivateRoute push exact path="/search/:data" component={Search} />
+          <PrivateRoute push exact path="/search/" component={Search} />
         </Switch>
       </Router>
     </div>

@@ -67,7 +67,7 @@ class Login extends Component {
     let validateEmail = new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g);
 
     if (this.state.emai === "" || this.state.fullname === "") {
-      customNotification.fireNotification("warning", "All fields are required")
+      customNotification.fireNotification("warning", "All fields are required") 
       return false;
     } else if (!validateEmail.test(this.state.email)) {
       customNotification.fireNotification("warning", "Email not valid")
@@ -85,11 +85,13 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-console.log("nextProps.loginUser :", nextProps, nextProps.loginUser.code)
+    console.log("nextProps.loginUser :", nextProps, nextProps.loginUser.code)
 
     if (nextProps.loginUser != undefined) {
       if (nextProps.loginUser && nextProps.loginUser.data && nextProps.loginUser.code === 200) {
-        customNotification.fireNotification("success", "LogedIn")
+        // customNotification.fireNotification("success", "LogedIn")
+        // @TODO PUSH LOCATION IN HISTORY
+        window.location.href = "/home";
       } else {
         customNotification.fireNotification("error", "Password and/or email not correct")
       }
