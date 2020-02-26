@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { getAllPassionsAction } from '../../store/actions/PassionActions/getAllPassionsAction';
 import { signupNewUserAction } from '../../store/actions/SignupAction/SignupNewUserAction';
+const createHistory = require("history").createBrowserHistory;
 
 const customNotification = require('../../Utils/notification');
 
@@ -82,6 +83,14 @@ class StepFive extends Component {
     });
   }
 
+  goTologinPage(e) {
+    e.preventDefault();
+    let history = createHistory();
+    history.push("/");
+    let pathUrl = window.location.href;
+    window.location.href = pathUrl;   
+  }
+
   render() {
     const { passions } = this.state;
 
@@ -108,6 +117,12 @@ class StepFive extends Component {
             type="button"
             value="Back"
             onClick={this.props.back}
+          />
+          <input 
+            className="btn-back"
+            type="button"
+            value="Go to login page"
+            onClick={this.goTologinPage}
           />
         </form>
       </Wrapper>
