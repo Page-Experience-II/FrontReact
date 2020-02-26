@@ -11,6 +11,7 @@ import Journals from "./page/Journals";
 import Notifications from "./page/Notifications";
 import Search from "./page/Search";
 import SignUp from "./page/SignUp";
+import ProfilePage from "./page/ProfilePage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Switch>
           <Route push exact path="/" component={Login} />
           <Route push exact path="/signup/" component={SignUp} />
+          <Route push exact path="/profile/:user" component={ProfilePage} />
           <Route push exact path="/home/" component={Home} />
           <Route push exact path="/content/:article" component={Content} />
           <Route push exact path="/journals/" component={Journals} />
