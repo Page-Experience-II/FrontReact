@@ -5,30 +5,38 @@ import { Link } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import Centre from "../components/Centre";
 import Side from "../components/Side";
-import CardFil from "../components/card/CardFil";
-import CardSideHome from "../components/card/CardSideHome";
+import Contribution from "../components/profilepage/Contribution";
+import Works from "../components/profilepage/Works";
+import Audience from "../components/profilepage/Audience";
 
 import brian from "../image/brian.png";
-import clara from "../image/clara.png";
-import mark from "../image/mark.png";
-import sean from "../image/sean.png";
-
-import back1 from "../image/back1.png";
-import back2 from "../image/back2.png";
-import back3 from "../image/back3.png";
-import back4 from "../image/back4.png";
+import Madone from "../image/works/madone.png";
 
 const Wrapper = styled.div`
-  .title-center {
-    width: 98%;
-    text-align: left;
-    margin: 0 auto;
-    font-size: 25px;
-    font-weight: bold;
-    padding-top: 15px;
-    border-bottom: 1px solid #00000069;
+  .profile-top {
+    display: flex;
+    align-items: center;
+    width: 90%;
   }
-
+  .profile-top-content {
+    margin: 10px;
+  }
+  .profile-top-content-name {
+    display: flex;
+    justify-content: space-between;
+  }
+  .profile-middle {
+    display: flex;
+    padding: 10px;
+    .profile-middle-bar {
+      flex: 1;
+    }
+    .profile-middle-content {
+      display: flex;
+      justify-content: center;
+      flex: 2 70%;
+    }
+  }
   h3 {
     width: 100%;
     font-size: 20px;
@@ -38,17 +46,142 @@ const Wrapper = styled.div`
 `;
 
 class ProfilePage extends Component {
-  state = {};
+  state = {
+    type: "CONTRIBUTIONS",
+    centre: [
+      {
+        id: 1,
+        user: "Brian Tracy",
+        photo: brian,
+        activites: "Filmmaker",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue convallis ligula, sed blandit arcu gravida nec. Morbi ut molestie dui, et faucibus nisi. Fusce eget posuere lorem. In vel augue id purus ultrices sodales id et elit. Maecenas maximus non risus a dictum. Praesent porttitor enim et odio rhoncus.",
+        cities: "New york cities"
+      }
+    ],
+    contribution: [
+      {
+        id: 1,
+        user: "Brian Tracy",
+        photo: brian,
+        hour: "il y a 3 heures",
+        content:
+          "Quae pastus Gallus huius ut quae scrutabatur nihilo necem pastus est cadaveribus refert multa modi excedamus refert multa necem ut singula modi modi professione evitandum huius ferociens leo necem multa."
+      },
+      {
+        id: 2,
+        user: "Brian Tracy",
+        photo: brian,
+        hour: "il y a 5 heures",
+        content:
+          "Quae pastus Gallus huius ut quae scrutabatur nihilo necem pastus est cadaveribus refert multa modi excedamus refert multa necem ut singula modi modi professione evitandum huius ferociens leo necem multa."
+      },
+      {
+        id: 3,
+        user: "Brian Tracy",
+        photo: brian,
+        hour: "il y a 12 heures",
+        content:
+          "Quae pastus Gallus huius ut quae scrutabatur nihilo necem pastus est cadaveribus refert multa modi excedamus refert multa necem ut singula modi modi professione evitandum huius ferociens leo necem multa."
+      }
+    ],
+    works: [
+      {
+        id: 1,
+        image: Madone,
+        name: "madone",
+        user: "Edward Munch",
+        art: "Painting"
+      },
+      {
+        id: 2,
+        image: Madone,
+        name: "madone",
+        user: "Edward Munch",
+        art: "Painting"
+      },
+      {
+        id: 3,
+        image: Madone,
+        name: "madone",
+        user: "Edward Munch",
+        art: "Painting"
+      }
+    ],
+    audience: [
+      {
+        id: 1,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 2,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 3,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 4,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 5,
+        photo: brian,
+        user: "John doe"
+      }
+    ]
+  };
+
+  handleContributions = () => {
+    this.setState({
+      type: "CONTRIBUTIONS"
+    });
+  };
+
+  handleWorks = () => {
+    this.setState({
+      type: "WORKS"
+    });
+  };
+
+  handleAudience = () => {
+    this.setState({
+      type: "AUDIENCE"
+    });
+  };
 
   render() {
     const target = this.props.match.params.user;
+    const found = this.state.centre.find(element => element.id == target);
+
+    let type;
+
+    switch (this.state.type) {
+      case "CONTRIBUTION":
+        type = <Contribution contribution={this.state.contribution} />;
+        break;
+      case "WORKS":
+        type = <Works works={this.state.works} />;
+        break;
+      case "AUDIENCE":
+        type = <Audience audience={this.state.audience} />;
+        break;
+
+      default:
+        type = <Contribution contribution={this.state.contribution} />;
+    }
     return (
       <Wrapper>
         <Layout>
           <Centre>
-            <div cklasName="profile-top">
+            <div className="profile-top">
               <div className="profile-top-photo">
-                <img src={found.id} alt="profile" />
+                <img src={found.photo} alt="profile" />
               </div>
               <div className="profile-top-content">
                 <div className="profile-top-content-name">
@@ -58,6 +191,16 @@ class ProfilePage extends Component {
                 <p>{found.description}</p>
                 <p>{found.cities}</p>
               </div>
+            </div>
+            <div className="profile-middle">
+              <div className="profile-middle-bar">
+                <ul>
+                  <li onClick={this.handleContributions}>Contribution</li>
+                  <li onClick={this.handleWorks}>Works</li>
+                  <li onClick={this.handleAudience}>Audience</li>
+                </ul>
+              </div>
+              <div className="profile-middle-content">{type}</div>
             </div>
           </Centre>
           <Side>
