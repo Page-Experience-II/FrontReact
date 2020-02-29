@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
+import { loginUserAction } from '../store/actions/LoginAction/LoginUserAction';
+
+const customNotification = require('../Utils/notification');
 
 const Wrapper = styled.div`
   width: 100%;
@@ -46,31 +51,63 @@ const Wrapper = styled.div`
 `;
 
 class Login extends Component {
-  state = {
-    adminE: "admin",
-    adminP: "admin",
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-    email: "",
-    password: ""
-  };
+  handleSubmit(e) {
+    e.preventDefault();
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+    let validateEmail = new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g);
+
+    if (this.state.emai === "" || this.state.fullname === "") {
+      customNotification.fireNotification("warning", "All fields are required") 
+      return false;
+    } else if (!validateEmail.test(this.state.email)) {
+      customNotification.fireNotification("warning", "Email not valid")
+    } else {
+      // Login user
+      let data = {
+        data: {
+          email: this.state.email,
+          password: this.state.password
+        }
+      }
+
+      this.props.onloginUserAction(data);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("nextProps.loginUser :", nextProps, nextProps.loginUser.code)
+
+    if (nextProps.loginUser != undefined) {
+      if (nextProps.loginUser && nextProps.loginUser.data && nextProps.loginUser.code === 200) {
+        // customNotification.fireNotification("success", "LogedIn")
+        // @TODO PUSH LOCATION IN HISTORY
+        window.location.href = "/home";
+      } else {
+        customNotification.fireNotification("error", "Password and/or email not correct")
+      }
+    }
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  }
 
   render() {
-    const data = this.state;
-    let token;
-
-    if (data.email === data.adminE && data.password === data.adminP) {
-      token = (
-        <Link className="btn-token" to="/home/">
-          Valider
-        </Link>
-      );
-    } else {
-      token = <Link className="btn-token">Valider</Link>;
-    }
 
     return (
       <Wrapper>
@@ -94,11 +131,27 @@ class Login extends Component {
             />
           </label>
           <Link to="/signup/"> Sign up here </Link>
-          {token}
+          <button onClick={this.handleSubmit} className="btn-token">Valider</button>
         </form>
       </Wrapper>
     );
   }
 }
 
-export default Login;
+const state = (state, ownProps = {}) => {
+  return {
+    loginUser: state.loginUser.data,
+    location: state.location,
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    navigateTo: (location) => {
+      dispatch(push(location));
+    },
+    onloginUserAction: (data) => dispatch(loginUserAction(data))
+  }
+};
+
+export default connect(state, mapDispatchToProps)(Login);

@@ -1,4 +1,4 @@
-## PAGEX FRONT/CLIENT PROJECT
+## PAGEX FRONT/CLIENT PROJECT 
 
 ## Description of the project :
 
@@ -52,6 +52,11 @@ Get the source:
 
 ```bash
 git clone https://github.com/PageExperience/FrontReact.git
+```
+
+Copy the environement variables
+```
+cp .env-tempale .env
 ```
 
 Install dependencies
