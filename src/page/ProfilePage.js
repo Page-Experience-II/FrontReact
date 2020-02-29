@@ -16,7 +16,9 @@ const Wrapper = styled.div`
   .profile-top {
     display: flex;
     align-items: center;
-    width: 90%;
+
+    width: 100%;
+    border-bottom: 1px solid #00000026;
   }
   .profile-top-content {
     margin: 10px;
@@ -29,7 +31,11 @@ const Wrapper = styled.div`
     display: flex;
     padding: 10px;
     .profile-middle-bar {
-      flex: 1;
+      flex: 1 10%;
+      li {
+        font-size: 15px;
+        margin: 10px;
+      }
     }
     .profile-middle-content {
       display: flex;
@@ -131,6 +137,21 @@ class ProfilePage extends Component {
       },
       {
         id: 5,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 6,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 7,
+        photo: brian,
+        user: "John doe"
+      },
+      {
+        id: 8,
         photo: brian,
         user: "John doe"
       }

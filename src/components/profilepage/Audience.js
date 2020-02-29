@@ -5,6 +5,7 @@ import CardAudience from "../card/CardAudience";
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
+  overflow: hidden;
 `;
 
 class Audience extends Component {
