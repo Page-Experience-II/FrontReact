@@ -133,7 +133,9 @@ class CardFil extends Component {
           <img src={this.props.photo} alt="profile" />
           <div className="info-top-card">
             <div>
-              <h4>{this.props.user}</h4>
+              <Link to={"/profile/" + this.props.id}>
+                <h4>{this.props.user}</h4>
+              </Link>
               <p className="info-hour">Il y a {this.props.hour} heures</p>
             </div>
             <div className="btn-content" onClick={this.handleShow}>
