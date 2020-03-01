@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import { Upload, Button } from 'antd';
 import axios from 'axios';
 import { message } from 'antd';
-import SelectWorkType from '../../components/Select';
+import { Input } from 'antd';
 import Brian from "../../image/brian.png";
-import defaultImageBackgroundUpload from './../../image/icone/DefaultImageUpload.svg'
+import defaultImageBackgroundUpload from './../../image/icone/imageBackground.svg'
+import pauseIcon from './../../image/icone/play-button.svg'
 
-const { Dragger } = Upload;
-
+const { TextArea } = Input;
 const Wrapper = styled.div`
   background: rgba(255, 255, 255, 0.6);
   position: absolute;
@@ -20,8 +20,8 @@ const Wrapper = styled.div`
   right: 0;
 
   .modal-setting-profile {
-    width: 70%;
-    height: 550px;
+    width: 40%;
+    height: 45%;
     margin: 25px auto;
     background: #fff;
     z-index: 13;
@@ -82,24 +82,47 @@ const Wrapper = styled.div`
   .header {
     display: grid;
     grid-template-columns: [first] 20% auto [last] 20%;
-  
-    /* optional just for visual purposes: */
     margin: 0 auto;
-    max-width: 1000px;  
+    max-width: 1000px;
   }
   .middle {
-    /* use either */
     margin: 0 auto;
-    /* or */
     text-align: center;
-    /* to keep the text centered */
   }
   .left {
     margin-left: 85%;
   }
   .right {
-    /* this makes sure the content is aligned right when shorter than 20% */
     margin-left: auto;
+  }
+  .square {
+    width:515px;
+    height:155px;
+    maxWidth: 500px;
+    maxheight: 150px;
+    background:#F1F1F1;
+    border-radius: 20px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  .item {
+    padding: 10px;
+  }
+  .push {
+    margin-right: auto;
+  }
+
+  .inputest {
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none;
   }
 `;
 
@@ -113,19 +136,9 @@ class ModalPublishWork extends Component {
     };
   }
   handleOk = async () => {  
-    const dataPost = JSON.stringify({
-        contentUserId: "5e51354eb2f340002b4cb87a",
-        contentTitle: "Awesome painting",
-        contentDescription: "This is my cool art",
-        file: "I am an image",
-        contentType: "passion",
-    });
-  
     this.setState({ loading: true });
     try {
-      const response = await axios.post('http://ec2-18-224-19-147.us-east-2.compute.amazonaws.com/api/v1/content/new',
-        dataPost, { headers: { 'Content-Type': 'application/json', } });
-      message.success('Post sending');
+      message.warn('Coming Soon');
       this.props.close();
     } catch (e) {
       console.log(`${e}`);
@@ -139,9 +152,33 @@ class ModalPublishWork extends Component {
     return (
       <Wrapper>
         <div className="modal-setting-profile">
-          <h3 className="modal-setting-title">Publish a post</h3>
-          <div className="centerButton">
-            <Button onClick={this.handleOk} style={{ marginLeft: '7%', marginTop: '2%', background: "black", borderColor: "#424242" }} type="primary" shape="round" size={20}> Publish </Button>
+          <h3 className="modal-setting-title">Publish a Contribution</h3>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <div className='square'>
+              <div style={{ marginTop: '1%', marginLeft: '1%', display: 'flex', alignItems: 'center'}}>
+                <img style={{ maxHeight: '10%', maxWidth: '10%' }} src={Brian}></img>
+                <div style={{minWidth: '440px', minHeight: '30px', maxHeight: '30px'}}>
+                  <TextArea className="inputest" placeholder="Feeling inspired ? share your thougts..."autoSize={{ maxRows: 5 }} />
+                </div>
+              </div>
+              <div style={{marginTop: '12%', marginLeft: '2%', }} className="container">
+                <div className="item">
+                  <img src={defaultImageBackgroundUpload}></img>
+                </div>
+                <div className="item">
+                  <img src={pauseIcon}></img>
+                </div>
+                <div className="item push">
+                  <p>#tags</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div style={{display: 'flex', flexDirection:'row-reverse', marginRight: '10%'}}>
+            <Button onClick={this.handleOk} style={{background: "black", borderColor: "#424242" }} type="primary" shape="round" size={20}> Publish </Button>
           </div>
           <Link className="btn-close" onClick={this.props.close}>
             X

@@ -10,6 +10,7 @@ import DropDownProfil from "../dropdown/DownProfile";
 import DropDownPublish from "../dropdown/DownPublish";
 
 import CreatePost from './../modal/ModalPublishWork';
+import CreateContribution from './../modal/ModalContribution';
 import SettingProfil from "../modal/SettingProfile";
 
 const Bar = styled.div`
@@ -68,8 +69,10 @@ class SearchBar extends Component {
   state = {
     search: "",
     actRedirect: false,
+    /*Create Contribution */
+    createContribution: false,
     /*Create Post*/
-    createPost: false,
+    createPost: true,
     dropDownPost: false,
     /**/
     /*Settings*/
@@ -106,11 +109,19 @@ class SearchBar extends Component {
   };
 
   /*OpenDropDownPost*/
-  handleCreatePost = () => {
-    this.setState({
-      createPost: !this.state.createPost,
-      dropDownPost: false
-    });
+  handleCreatePost = (value) => {
+    if (value === 1) {
+      this.setState({
+        createPost: !this.state.createPost,
+        dropDownPost: false
+      });
+    }
+    else {
+      this.setState({
+        createContribution: !this.state.createContribution,
+        dropDownPost: false
+      });
+    }
   };
 
   render() {
@@ -128,8 +139,14 @@ class SearchBar extends Component {
       dropDownPost = <DropDownPublish init={this.handleCreatePost} />;
     }
     if (this.state.createPost) {
-      createPost = <CreatePost close={this.handleCreatePost} />;
+      createPost = <CreateContribution close={this.handleCreatePost} />;
     }
+    // if (this.state.createPost) {
+    //   createPost = <CreateContribution close={this.handleCreatePost} />;
+    // }
+    // if (this.state.createContribution) {
+    //   createPost = <CreateContribution close={this.handleCreatePost} />;
+    // }
     if (this.state.settingProfil) {
       settingProfil = <SettingProfil close={this.handleSettingProfil} />;
     }

@@ -130,15 +130,25 @@ class DownProfile extends Component {
       showModalPublishContribution: false,
     }
   };
+  PublishAWork = () =>
+  {
+    const displayModalPublishWork = 1;
+    this.props.init(displayModalPublishWork);
+  }
+  PublishContribution = () =>
+  {
+    const displayModalPublishContribution = 2;
+    this.props.init(displayModalPublishContribution);
+  }
   render() {
     return (
       <Wrapper>
         <ul>
           <li>
-            <Link onClick={this.props.init}>Publish a work</Link>
+            <Link onClick={this.PublishAWork}>Publish a work</Link>
           </li>
           <li>
-            <Link onClick={this.props.init}>Publish a Contribution</Link>
+            <Link onClick={this.PublishContribution}>Publish a Contribution</Link>
           </li>
         </ul>
       </Wrapper>
