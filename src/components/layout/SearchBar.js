@@ -72,7 +72,8 @@ class SearchBar extends Component {
     /*Create Contribution */
     createContribution: false,
     /*Create Post*/
-    createPost: true,
+    createPost: false,
+
     dropDownPost: false,
     /**/
     /*Settings*/
@@ -112,15 +113,24 @@ class SearchBar extends Component {
   handleCreatePost = (value) => {
     if (value === 1) {
       this.setState({
-        createPost: !this.state.createPost,
+        createPost: true,
+        createContribution: false,
+        dropDownPost: false
+      });
+    }
+    else if (value === 2) {
+      this.setState({
+        createContribution: true,
+        createPost: false,
         dropDownPost: false
       });
     }
     else {
       this.setState({
-        createContribution: !this.state.createContribution,
+        createContribution: false,
+        createPost: false,
         dropDownPost: false
-      });
+    })
     }
   };
 
@@ -131,6 +141,7 @@ class SearchBar extends Component {
     let dropDownPost;
     let settingProfil;
     let createPost;
+    let createContribution;
 
     if (displayDropDownProfil) {
       dropDownProfil = <DropDownProfil init={this.handleSettingProfil} />;
@@ -139,14 +150,11 @@ class SearchBar extends Component {
       dropDownPost = <DropDownPublish init={this.handleCreatePost} />;
     }
     if (this.state.createPost) {
-      createPost = <CreateContribution close={this.handleCreatePost} />;
+      createPost = <CreatePost close={this.handleCreatePost} />;
     }
-    // if (this.state.createPost) {
-    //   createPost = <CreateContribution close={this.handleCreatePost} />;
-    // }
-    // if (this.state.createContribution) {
-    //   createPost = <CreateContribution close={this.handleCreatePost} />;
-    // }
+    if (this.state.createContribution) {
+      createContribution = <CreateContribution close={this.handleCreatePost} />;
+    }
     if (this.state.settingProfil) {
       settingProfil = <SettingProfil close={this.handleSettingProfil} />;
     }
@@ -185,6 +193,7 @@ class SearchBar extends Component {
         {settingProfil}
         {dropDownPost}
         {createPost}
+        {createContribution}
       </Bar>
     );
   }
