@@ -69,7 +69,7 @@ class SearchBar extends Component {
     search: "",
     actRedirect: false,
     /*Create Post*/
-    createPost: true,
+    createPost: false,
     dropDownPost: false,
     /**/
     /*Settings*/
