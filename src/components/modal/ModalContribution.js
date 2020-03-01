@@ -5,7 +5,7 @@ import CommentMessage from '../CommentMessage';
 class ModalPublishWork extends React.Component {
   state = {
     loading: false,
-    visible: false,
+    visible: true,
   };
 
   showModal = () => {
@@ -30,9 +30,6 @@ class ModalPublishWork extends React.Component {
     const { visible, loading } = this.state;
     return (
       <div>
-        <Button type="primary" onClick={this.showModal}>
-          Publish a Contribution
-        </Button>
         <Modal
           visible={visible}
           title="Publish a Contribution"

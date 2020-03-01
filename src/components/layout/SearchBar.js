@@ -6,8 +6,11 @@ import Create from "../../image/icone/createBtn.svg";
 import Profile from "../../image/icone/profileBtn.svg";
 import IconSearch from "../../image/icone/search.svg";
 
-import DownProfile from "../dropdown/DownProfile";
-import SettingProfile from "../modal/SettingProfile";
+import DropDownProfil from "../dropdown/DownProfile";
+import DropDownPublish from "../dropdown/DownPublish";
+
+import CreatePost from './../modal/ModalPublishWork';
+import SettingProfil from "../modal/SettingProfile";
 
 const Bar = styled.div`
   height: 100px;
@@ -65,8 +68,14 @@ class SearchBar extends Component {
   state = {
     search: "",
     actRedirect: false,
-    downProfile: false,
-    settingProfile: false
+    /*Create Post*/
+    createPost: true,
+    dropDownPost: false,
+    /**/
+    /*Settings*/
+    settingProfil: false,
+    dropDownProfil: false
+    /**/
   };
 
   handleChange = event => {
@@ -79,31 +88,51 @@ class SearchBar extends Component {
     }
   };
 
-  handleClick = event => {
-    this.setState({ downProfile: !this.state.downProfile });
+
+  handleClickSettingProfil = event => {
+    this.setState({ dropDownProfil: !this.state.dropDownProfil });
   };
 
-  handleSettingProfile = () => {
+  /*OpenDropDownSettings*/
+  handleSettingProfil = () => {
     this.setState({
-      settingProfile: !this.state.settingProfile,
-      downProfile: false
+      settingProfil: !this.state.settingProfil,
+      dropDownProfil: false
+    });
+  };
+
+  handleClickCreatePost = event => {
+    this.setState({ dropDownPost: !this.state.dropDownPost });
+  };
+
+  /*OpenDropDownPost*/
+  handleCreatePost = () => {
+    this.setState({
+      createPost: !this.state.createPost,
+      dropDownPost: false
     });
   };
 
   render() {
-    const afficherDownProfile = this.state.downProfile;
-    let dropdownProfile;
+    const displayDropDownProfil = this.state.dropDownProfil;
+    const displayDropDownPost = this.state.dropDownPost;
+    let dropDownProfil;
+    let dropDownPost;
+    let settingProfil;
+    let createPost;
 
-    if (afficherDownProfile) {
-      dropdownProfile = <DownProfile init={this.handleSettingProfile} />;
+    if (displayDropDownProfil) {
+      dropDownProfil = <DropDownProfil init={this.handleSettingProfil} />;
     }
-
-    let settingProfile;
-
-    if (this.state.settingProfile) {
-      settingProfile = <SettingProfile close={this.handleSettingProfile} />;
+    if (displayDropDownPost) {
+      dropDownPost = <DropDownPublish init={this.handleCreatePost} />;
     }
-
+    if (this.state.createPost) {
+      createPost = <CreatePost close={this.handleCreatePost} />;
+    }
+    if (this.state.settingProfil) {
+      settingProfil = <SettingProfil close={this.handleSettingProfil} />;
+    }
     return (
       <Bar>
         <div className="bar">
@@ -120,12 +149,12 @@ class SearchBar extends Component {
         </div>
         <ul className="group-icone-search">
           <li className="item-icone">
-            <Link to="/">
+            <Link onClick={this.handleClickCreatePost}>
               <img src={Create} alt="icone" />
             </Link>
           </li>
           <li className="item-icone">
-            <Link onClick={this.handleClick}>
+            <Link onClick={this.handleClickSettingProfil}>
               <img src={Profile} alt="icone" />
             </Link>
           </li>
@@ -135,8 +164,10 @@ class SearchBar extends Component {
         ) : (
           ""
         )}
-        {dropdownProfile}
-        {settingProfile}
+        {dropDownProfil}
+        {settingProfil}
+        {dropDownPost}
+        {createPost}
       </Bar>
     );
   }
