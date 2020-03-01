@@ -79,6 +79,28 @@ const Wrapper = styled.div`
     border: 0.5px solid #70707036;
     opacity: 1;
   }
+  .header {
+    display: grid;
+    grid-template-columns: [first] 20% auto [last] 20%;
+  
+    /* optional just for visual purposes: */
+    margin: 0 auto;
+    max-width: 1000px;  
+  }
+  .middle {
+    /* use either */
+    margin: 0 auto;
+    /* or */
+    text-align: center;
+    /* to keep the text centered */
+  }
+  .left {
+    margin-left: 85%;
+  }
+  .right {
+    /* this makes sure the content is aligned right when shorter than 20% */
+    margin-left: auto;
+  }
 `;
 
 class ModalPublishWork extends Component {
@@ -103,7 +125,6 @@ class ModalPublishWork extends Component {
     try {
       const response = await axios.post('http://ec2-18-224-19-147.us-east-2.compute.amazonaws.com/api/v1/content/new',
         dataPost, { headers: { 'Content-Type': 'application/json', } });
-      console.log(response);
       message.success('Post sending');
       this.props.close();
     } catch (e) {
@@ -119,28 +140,33 @@ class ModalPublishWork extends Component {
       <Wrapper>
         <div className="modal-setting-profile">
           <h3 className="modal-setting-title">Publish a post</h3>
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-          <Dragger style={{marginLeft: '-20%', minHeight: "150%", minWidth: "150%"}}>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          <div style={{minHeight: "200%", maxWidth: "50%", marginLeft: '27%'}}>
+          <Dragger>
             <p className="ant-upload-drag-icon">
             <img src={defaultImageBackgroundUpload} alt="defaul-image-upload" />
             </p>
             <p className="ant-upload-hint">Drag and drop a header picture here</p>
             <p className="ant-upload-text">Only JPG, PNG and GIF files are allowed</p>
           </Dragger>
-        </div>
-          <div style={{marginTop: '12%', marginLeft: '13%'}} className="center">
-          <strong><p>Title</p></strong>
-            <input className="inputest" size="30" style={{marginLeft: '15%'}}></input>
           </div>
-          <div style={{marginTop: '2%', marginLeft: '13%'}} className="center">
-          <strong><p>Description</p></strong>
-            <input className="inputest" size="30" style={{marginLeft: "7.9%"}}></input>
+
+          <div style={{display: 'flex', marginLeft: '20%', marginTop: '2%'}}>
+            <strong><p>Title</p></strong>
+            <input style={{marginLeft: '19%'}} className="inputest" size="30"></input>
           </div>
-          <div style={{marginTop: '2%',marginLeft: '13%'}} className="center">
+
+          <div style={{display: 'flex', marginLeft: '20%', marginTop: '2%'}}>
+            <strong><p>Description</p></strong>
+            <input style={{marginLeft: '13.3%'}} className="inputest" size="30"></input>
+          </div>
+
+          <div style={{display: 'flex', marginLeft: '20%', marginTop: '2%'}}>
             <strong><p>Work type</p></strong>
-            <div style={{marginLeft: '22%'}} >
+            <div style={{marginLeft: '15%'}}>
               <SelectWorkType placeholder="Type of work"></SelectWorkType>
             </div>
+          </div>
           </div>
           <div className="centerButton">
             <Button onClick={this.handleOk} style={{ marginLeft: '7%', marginTop: '2%', background: "black", borderColor: "#424242" }} type="primary" shape="round" size={20}> Publish </Button>
