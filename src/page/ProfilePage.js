@@ -196,6 +196,15 @@ class ProfilePage extends Component {
       default:
         type = <Contribution contribution={this.state.contribution} />;
     }
+
+    const bold = {
+      fontWeight: "bold"
+    };
+
+    const normal = {
+      fontWeight: "normal"
+    };
+
     return (
       <Wrapper>
         <Layout>
@@ -216,9 +225,24 @@ class ProfilePage extends Component {
             <div className="profile-middle">
               <div className="profile-middle-bar">
                 <ul>
-                  <li onClick={this.handleContributions}>Contribution</li>
-                  <li onClick={this.handleWorks}>Works</li>
-                  <li onClick={this.handleAudience}>Audience</li>
+                  <li
+                    style={this.state.contribution ? bold : normal}
+                    onClick={this.handleContributions}
+                  >
+                    Contribution
+                  </li>
+                  <li
+                    style={this.state.works ? bold : normal}
+                    onClick={this.handleWorks}
+                  >
+                    Works
+                  </li>
+                  <li
+                    style={this.state.audience ? bold : normal}
+                    onClick={this.handleAudience}
+                  >
+                    Audience
+                  </li>
                 </ul>
               </div>
               <div className="profile-middle-content">{type}</div>
